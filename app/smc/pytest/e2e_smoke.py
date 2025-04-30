@@ -211,3 +211,28 @@ def test_smi_reset():
 
     logger.info(f"'tt-smi -r' failed {fail_count}/{total_tries} times.")
     assert fail_count == 0, "'tt-smi -r' failed a non-zero number of times."
+
+
+@pytest.mark.reset
+def test_bmc_reset():
+    """
+    Checks that bmc resets are working successfully
+    """
+    bmc_reset_cmd = "../tt-zephyr-platforms/scripts/bmc-reset.py --wait -dd"
+    total_tries = 10
+    fail_count = 0
+    for i in range(total_tries):
+        logger.info(f"Iteration {i}:")
+        bmc_reset_result = subprocess.run(
+            bmc_reset_cmd.split(), capture_output=True, text=True, check=False
+        )
+
+        for output_line in bmc_reset_result.stdout.split("\n"):
+            logger.info(output_line)
+        logger.info(f"'bmc-reset.py' returncode:{bmc_reset_result.returncode}\n")
+
+        if bmc_reset_result.returncode != 0:
+            fail_count += 1
+
+    logger.info(f"'bmc-reset.py' failed {fail_count}/{total_tries} times.")
+    assert fail_count == 0, "'bmc-reset.py' failed a non-zero number of times."
