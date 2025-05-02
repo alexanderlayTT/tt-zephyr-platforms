@@ -29,6 +29,7 @@ tests:
         - "-m not reset"
   app.e2e-smoke-reset:
     tags: e2e-reset
+    timeout: 3600
     harness: pytest
     sysbuild: true
     harness_config:

@@ -229,6 +229,10 @@ def test_bmc_reset():
 
         for output_line in bmc_reset_result.stdout.split("\n"):
             logger.info(output_line)
+
+        # TODO DEBUG
+        for output_line in bmc_reset_result.stderr.split("\n"):
+            logger.info(output_line)
         logger.info(f"'bmc-reset.py' returncode:{bmc_reset_result.returncode}\n")
 
         if bmc_reset_result.returncode != 0:
