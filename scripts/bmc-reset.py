@@ -250,6 +250,15 @@ def wait_for_smc_boot(timeout):
     # Try to detect the card using pyluwen- this indicates ARC has booted
     while True:
         try:
+            for device in Path("/sys/bus/pci/devices/").iterdir():
+                try:
+                    vendor = (device / "vendor").read_text().strip()
+                    if vendor == "0x1e52":
+                        bdf = device.name  # format: "0000:00:1f.0
+                        for entry in Path(f"/sys/bus/pci/devices/{bdf}").iterdir():
+                            print(entry.name)
+                except Exception:
+                    continue
             chips = pyluwen.detect_chips()
             print("SMC init complete")
             chip = chips[0]
